@@ -43,6 +43,7 @@ const resolvers = {
     post: (parent, args) => {
       let idCount = links.length;
       const link = {
+        // 現在の配列数+1
         id: `link-${idCount++}`,
         description: args.description,
         url: args.url,
