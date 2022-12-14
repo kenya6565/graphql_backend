@@ -16,3 +16,11 @@ const resolvers = {
     info: () => "HackerNewsクローン",
   },
 };
+
+// インスタンス化して初めて使うことができる
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) => console.log(`${url}でサーバーを起動中`));
