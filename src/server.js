@@ -1,4 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
+const fs = require("fs");
+const path = require("path");
 
 //HackerNewsの1つ1つの投稿(本当ならDBから取ってきたりする)
 let links = [
@@ -8,27 +10,6 @@ let links = [
     url: "www.udemy-graphql-tutorial.com",
   },
 ];
-
-//GraphQLのスキーマ(データ構造)の定義
-const typeDefs = gql`
-  type Query {
-    # 必須
-    info: String!
-    feed: [Link]!
-  }
-
-  type Mutation {
-    # postメソッドのときはLinkが必須になるよ
-    post(url: String!, description: String!): Link!
-  }
-
-  type Link {
-    id: ID!
-    # ニュースタイトル
-    description: String!
-    url: String!
-  }
-`;
 
 // リゾルバ関数
 // typeDefsで定義した型に値を入れていく関数
@@ -60,7 +41,8 @@ const resolvers = {
 
 // インスタンス化して初めて使うことができる
 const server = new ApolloServer({
-  typeDefs,
+  // __dirnameは今操作しているファイルのdir名を取得(server.jsならsrcを取得)
+  typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf-8"),
   resolvers,
 });
 
