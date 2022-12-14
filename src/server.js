@@ -17,6 +17,11 @@ const typeDefs = gql`
     feed: [Link]!
   }
 
+  type Mutation {
+    # postメソッドのときはLinkが必須になるよ
+    post(url: String!, description: String!): Link!
+  }
+
   type Link {
     id: ID!
     # ニュースタイトル
@@ -32,6 +37,23 @@ const resolvers = {
   Query: {
     info: () => "HackerNewsクローン",
     feed: () => links,
+  },
+
+  Mutation: {
+    post: (parent, args) => {
+      let idCount = links.length;
+      const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url,
+      };
+
+      // 既存のlinksに入れる
+      links.push(link);
+      
+      // 作成したlinkはplaygroundで見たいから返す
+      return link;
+    },
   },
 };
 
