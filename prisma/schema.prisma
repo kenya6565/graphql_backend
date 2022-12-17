@@ -6,6 +6,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      =  "file: ./dev.db"
+}
+ 
+model Link {
+  // @id = ユニークな値
+  // @default(autoincrement()) = 自動的に+1
+  id Int @id @default(autoincrement())
+
+  // @default(now()) = 投稿直後の時間を入れる
+  createdAt DateTime @default(now())
+  description String
+  url String
 }
